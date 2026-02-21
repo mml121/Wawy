@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wawy — Quantum Orbital Visualizer</title>
+  <meta name="description" content="Visualize hydrogen atomic orbitals based on quantum numbers n, l, m.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="header-logo">Wawy</a>
+      <nav class="header-nav" id="nav">
+        <a href="#simulation-section" class="nav-link">Visualizer</a>
+        <a href="#info-section" class="nav-link">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="document.getElementById('simulation-section').scrollIntoView({behavior:'smooth'})">
+          <span class="btn-text">Launch</span>
+          <span class="btn-text-hover">Launch</span>
+        </button>
+        <button class="header-menu-toggle" id="menu-toggle" aria-label="Open menu">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Floating Background Elements -->
+  <div class="bg-elements" aria-hidden="true">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-dot-grid"></div>
+    <div class="bg-ring bg-ring-1"></div>
+    <div class="bg-ring bg-ring-2"></div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-particles" aria-hidden="true">
+      <span class="hero-particle" style="--x: 15%; --y: 25%; --delay: 0s; --size: 3px;"></span>
+      <span class="hero-particle" style="--x: 80%; --y: 15%; --delay: 1.2s; --size: 2px;"></span>
+      <span class="hero-particle" style="--x: 45%; --y: 70%; --delay: 0.6s; --size: 4px;"></span>
+      <span class="hero-particle" style="--x: 90%; --y: 60%; --delay: 2s; --size: 2px;"></span>
+      <span class="hero-particle" style="--x: 10%; --y: 80%; --delay: 1.5s; --size: 3px;"></span>
+      <span class="hero-particle" style="--x: 65%; --y: 35%; --delay: 0.8s; --size: 2px;"></span>
+      <span class="hero-particle" style="--x: 30%; --y: 50%; --delay: 2.5s; --size: 3px;"></span>
+      <span class="hero-particle" style="--x: 70%; --y: 85%; --delay: 1s; --size: 2px;"></span>
+    </div>
+    <!-- Translucent Hydrogen Atom -->
+    <div class="hero-atom" aria-hidden="true">
+      <div class="atom-nucleus"></div>
+      <div class="atom-orbit atom-orbit-1"><span class="atom-electron"></span></div>
+      <div class="atom-orbit atom-orbit-2"><span class="atom-electron"></span></div>
+      <div class="atom-orbit atom-orbit-3"><span class="atom-electron"></span></div>
+      <div class="atom-shell atom-shell-1"></div>
+      <div class="atom-shell atom-shell-2"></div>
+    </div>
+
+    <div class="container hero-content">
+      <h1 class="hero-title animate-on-scroll">Quantum Orbital<br>Visualizer</h1>
+      <p class="hero-subtitle animate-on-scroll">Explore hydrogen atomic orbitals in real-time. Adjust quantum numbers n, l, and m to see how electron probability densities shape the atom.</p>
+      <button class="btn btn-primary hero-cta animate-on-scroll" onclick="document.getElementById('simulation-section').scrollIntoView({behavior:'smooth'})">
+        <span class="btn-text">Explore Orbitals</span>
+        <span class="btn-text-hover">Explore Orbitals</span>
+      </button>
+      <div class="hero-scroll-indicator animate-on-scroll">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulation -->
+  <section class="section" id="simulation-section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-tag">Interactive</span>
+        <h2 class="section-title">Orbital Viewer</h2>
+      </div>
+      <div class="simulation-layout">
+        <div class="canvas-wrapper animate-on-scroll">
+          <canvas id="simulation-canvas"></canvas>
+          <div class="canvas-badge" id="orbital-label">2p (m=0)</div>
+        </div>
+        <div class="controls-panel animate-on-scroll">
+          <h3 class="controls-title">Quantum Numbers</h3>
+
+          <!-- View Mode Toggle -->
+          <div class="mode-toggle">
+            <button class="mode-btn active" id="btn-mode-2d">2D Cross-Section</button>
+            <button class="mode-btn" id="btn-mode-3d">3D Cloud</button>
+          </div>
+
+          <!-- Quantum Numbers -->
+          <div class="control-group">
+            <label class="control-label">
+              <span>n — Principal</span>
+              <span class="control-value" id="n-display"></span>
+            </label>
+            <input type="number" class="control-input" id="input-n" min="1" max="7" value="2">
+            <span class="control-hint">Energy level (1–7)</span>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">
+              <span>l — Angular Momentum</span>
+              <span class="control-value" id="l-display"></span>
+            </label>
+            <input type="number" class="control-input" id="input-l" min="0" max="6" value="1">
+            <span class="control-hint">Subshell: 0=s, 1=p, 2=d, 3=f</span>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">
+              <span>m — Magnetic</span>
+              <span class="control-value" id="m-display"></span>
+            </label>
+            <input type="number" class="control-input" id="input-m" min="-6" max="6" value="0">
+            <span class="control-hint">Orientation (-l to +l)</span>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">
+              <span>Zoom</span>
+              <span class="control-value" id="zoom-value">1.0x</span>
+            </label>
+            <input type="range" class="control-slider" id="slider-zoom" min="0.3" max="4" step="0.1" value="1">
+          </div>
+
+          <div class="controls-buttons">
+            <button class="btn btn-primary" id="btn-start">
+              <span class="btn-text">Rotate</span>
+              <span class="btn-text-hover">Rotate</span>
+            </button>
+            <button class="btn btn-outline" id="btn-pause">
+              <span class="btn-text">Stop</span>
+              <span class="btn-text-hover">Stop</span>
+            </button>
+            <button class="btn btn-outline" id="btn-reset">
+              <span class="btn-text">Reset</span>
+              <span class="btn-text-hover">Reset</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presets -->
+      <div class="presets animate-on-scroll">
+        <span class="presets-label">Quick presets:</span>
+        <button class="preset-chip" data-n="1" data-l="0" data-m="0">1s</button>
+        <button class="preset-chip" data-n="2" data-l="0" data-m="0">2s</button>
+        <button class="preset-chip" data-n="2" data-l="1" data-m="0">2p</button>
+        <button class="preset-chip" data-n="3" data-l="0" data-m="0">3s</button>
+        <button class="preset-chip" data-n="3" data-l="1" data-m="0">3p</button>
+        <button class="preset-chip" data-n="3" data-l="2" data-m="0">3d</button>
+        <button class="preset-chip" data-n="4" data-l="0" data-m="0">4s</button>
+        <button class="preset-chip" data-n="4" data-l="2" data-m="0">4d</button>
+        <button class="preset-chip" data-n="4" data-l="3" data-m="0">4f</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Info -->
+  <section class="section" id="info-section">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <span class="section-tag">Learn</span>
+        <h2 class="section-title">Quantum Numbers</h2>
+      </div>
+      <div class="info-grid animate-on-scroll">
+        <div class="info-card">
+          <div class="info-badge">n</div>
+          <h3>Principal</h3>
+          <p>Determines the energy level and overall size of the orbital. Higher n means the electron is further from the nucleus, with more energy.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-badge">l</div>
+          <h3>Angular Momentum</h3>
+          <p>Defines the shape of the orbital. l=0 is spherical (s), l=1 is dumbbell (p), l=2 is cloverleaf (d), l=3 is complex (f).</p>
+        </div>
+        <div class="info-card">
+          <div class="info-badge">m</div>
+          <h3>Magnetic</h3>
+          <p>Specifies the orientation of the orbital in space. For a given l, m ranges from -l to +l, giving 2l+1 possible orientations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">Wawy</span>
+        <span class="footer-copy">&copy; 2026. Built with curiosity.</span>
+      </div>
+      <div class="footer-socials">
+        <a href="https://linkedin.com/in/mohammed-m-l-583016330/" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+        <a href="https://github.com/mml121" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+        <a href="mailto:mohammedml.1210@example.com" class="footer-social-link" aria-label="Email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          <span>Email</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/simulation.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
