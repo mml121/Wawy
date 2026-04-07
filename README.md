@@ -22,32 +22,20 @@ Wawy visualizes hydrogen atom wavefunctions by computing probability densities f
 
 The simulation solves the hydrogen atom Schrodinger equation analytically:
 
-| Component | Implementation |
-|-----------|---------------|
-| Radial wavefunction R(r) | Associated Laguerre polynomials via recurrence relation |
+| Component                   | Implementation                                                 |
+| --------------------------- | -------------------------------------------------------------- |
+| Radial wavefunction R(r)    | Associated Laguerre polynomials via recurrence relation        |
 | Angular wavefunction Y(θ,φ) | Real spherical harmonics using Associated Legendre polynomials |
-| Probability density | \|ψ(r, θ, φ)\|² where ψ = R(r) · Y(θ, φ) |
-| 3D sampling | Rejection sampling against computed max density |
+| Probability density         | \|ψ(r, θ, φ)\|² where ψ = R(r) · Y(θ, φ)                       |
+| 3D sampling                 | Rejection sampling against computed max density                |
 
 ### Quantum Numbers
 
-| Symbol | Name | Range | Controls |
-|--------|------|-------|----------|
-| **n** | Principal | 1–7 | Energy level and orbital size |
-| **l** | Angular Momentum | 0 to n−1 | Orbital shape (s, p, d, f, g, h) |
-| **m** | Magnetic | −l to +l | Spatial orientation |
-
-## Getting Started
-
-No install or build step required:
-
-```bash
-# Option 1: Open directly
-open index.html
-
-# Option 2: Local server
-npx serve .
-```
+| Symbol | Name             | Range    | Controls                         |
+| ------ | ---------------- | -------- | -------------------------------- |
+| **n**  | Principal        | 1–7      | Energy level and orbital size    |
+| **l**  | Angular Momentum | 0 to n−1 | Orbital shape (s, p, d, f, g, h) |
+| **m**  | Magnetic         | −l to +l | Spatial orientation              |
 
 ## Deployment
 
@@ -72,6 +60,7 @@ wawy/
 ```
 
 **Separation of concerns:**
+
 - `simulation.js` — Pure math, no DOM or canvas access
 - `renderer.js` — All drawing logic, mode switching, rotation state
 - `main.js` — Wires controls to simulation/renderer, handles user input
