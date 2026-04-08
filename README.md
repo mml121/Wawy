@@ -39,23 +39,6 @@ The simulation solves the hydrogen atom Schrodinger equation analytically:
 | **l**  | Angular Momentum | 0 to n−1 | Orbital shape (s, p, d, f, g, h) |
 | **m**  | Magnetic         | −l to +l | Spatial orientation              |
 
-## Getting Started
-
-```bash
-git clone https://github.com/mml121/Wawy.git
-cd Wawy
-```
-
-Open `index.html` in your browser — no build tools or dependencies required.
-
-## Deployment
-
-Static site — deploy anywhere. For Netlify:
-
-1. Connect the GitHub repo
-2. Publish directory: `/`
-3. No build command needed
-
 ## Architecture
 
 ```
