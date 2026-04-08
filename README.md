@@ -2,7 +2,9 @@
 
 A real-time, interactive hydrogen atomic orbital visualizer. Explore how quantum numbers shape electron probability densities through 2D cross-section heatmaps and 3D point cloud rendering — all in the browser with zero dependencies.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://wawy.netlify.app) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://wavy-visualisation.netlify.app) ![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+
+![Wawy Screenshot](assets/screenshot.png)
 
 ## Overview
 
@@ -37,6 +39,15 @@ The simulation solves the hydrogen atom Schrodinger equation analytically:
 | **l**  | Angular Momentum | 0 to n−1 | Orbital shape (s, p, d, f, g, h) |
 | **m**  | Magnetic         | −l to +l | Spatial orientation              |
 
+## Getting Started
+
+```bash
+git clone https://github.com/mml121/Wawy.git
+cd Wawy
+```
+
+Open `index.html` in your browser — no build tools or dependencies required.
+
 ## Deployment
 
 Static site — deploy anywhere. For Netlify:
@@ -56,6 +67,8 @@ wawy/
 │   ├── simulation.js     # Wavefunction math, density grid, point cloud generation
 │   ├── renderer.js       # Canvas 2D heatmap and 3D projection rendering
 │   └── main.js           # UI controls, event handling, animation loop
+├── assets/               # Screenshots and media
+├── LICENSE
 └── README.md
 ```
 
